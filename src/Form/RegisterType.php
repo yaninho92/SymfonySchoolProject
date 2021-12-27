@@ -6,6 +6,7 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RegisterType extends AbstractType
 {
@@ -13,13 +14,12 @@ class RegisterType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('roles')
             ->add('password')
             ->add('firstname')
             ->add('lastname')
-            ->add('createdAt')
-            ->add('updatedAt')
-            ->add('deletedAt')
+            ->add('submit', SubmitType::class, [
+                'label' => 'Valider'
+            ])
         ;
     }
 
