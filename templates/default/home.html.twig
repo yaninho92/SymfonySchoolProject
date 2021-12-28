@@ -1,7 +1,38 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
-    <div class='col-6 mx-auto'>
-        Hello World
+    <div class='row'>
+       <h2 class='col-12 text-center my-2'>Tout les articles</h2>
+       <div  class="col-sm-12 col-lg-12 col-xl-12 mt-4">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                        {% if label == 'success' %}
+                            <span class="alert-inner--icon"><i class="fe fe-thumbs-up"></i></span>
+                        {% else %}
+                            <span class="alert-inner--icon"><i class="fe fe-thumbs-down"></i></span>
+                        {% endif %}
+                        <span class="alert-inner--text"><strong>{{ label | title }} : </strong> {{ message | raw }}</span>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
     </div>
+    {% for article in articles %}
+        <div class='col-3 my-3 mx-2'>  
+            <div class="card" style="width: 18rem; height: 30rem;">
+                <img src="{{ asset('uploads/' ~ article.photo) }}" class="card-img-top img-card-custom" alt="image de l'article">
+                {# <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Catégorie : </li>
+                
+                </ul> #}
+                <div class="card-body">
+                    <h5 class="card-title">{{article.title | length > 20 ? article.title | slice(0,20) ~ '...' : article.title}}</h5>
+                    <h6 class="card-title">{{article.subtitle | length > 30 ? article.subtitle | slice(0,30) ~ '...' : article.subtitle}}</h6>
+                    <p class="card-text">{{article.content | length > 100 ? article.content | slice(0,100) ~ '...' : article.content}}</p>
+                    <a href="#" class="btn btn-warning d-block mx-auto">Voir l'article</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}

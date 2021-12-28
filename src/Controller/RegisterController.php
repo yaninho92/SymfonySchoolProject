@@ -30,11 +30,11 @@ class RegisterController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $user = $form->getData();
 
-            $user->setCreatedAt(new DateTime());
+            // $user->setCreatedAt(new DateTime());
 
             $user->setPassword($passwordHasher->hashPassword($user, $user->getPassword()));
 
-            $user->setRoles(['ROLE_USER']);
+            // $user->setRoles(['ROLE_USER']);
             
             $entityManager->persist($user);
             $entityManager->flush();

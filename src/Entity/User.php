@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -60,6 +61,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $deletedAt;
 
+    public function __construct()
+    {
+        $this->setRoles(['ROLE_USER']);
+        $this->setCreatedAt(new DateTime());
+    }
     public function getId(): ?int
     {
         return $this->id;

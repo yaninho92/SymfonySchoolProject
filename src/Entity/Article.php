@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticleRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ArticleRepository;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
@@ -56,6 +57,11 @@ class Article
      * @ORM\Column(type="string", length=150, nullable=true)
      */
     private $photo;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new DateTime());
+    }
 
     public function getId(): ?int
     {
