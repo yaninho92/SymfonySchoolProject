@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+    <div class='row'>
+       <div class='col-6 mx-auto'>
+            <h2 class='text-center'>Ajouter un article</h2>
+        </div>
+    </div>
+
+    <div class='row'>
+       <div class='col-8 mx-auto'>
+            {{ form_start(form, {'attr': {novalidate: 'novalidate'}}) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
