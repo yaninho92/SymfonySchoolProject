@@ -1,7 +1,19 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
+    <div class='row my-4'>
+        <h3 class='text-center'>Inscription</h3>
+    </div>
+    <div class='row mb-4'>
+        <div class='col-8 mx-auto'>
+            {{ form_start(form, { 'attr': { novalidate: 'novalidate' }}) }}
+                {{ form_row(form.firstname) }}
+                {{ form_row(form.lastname) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.password) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
     
-    {{ form(form) }}
       
 {% endblock %}
