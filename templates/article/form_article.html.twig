@@ -3,13 +3,27 @@
 {% block content %}
     <div class='row'>
        <div class='col-6 mx-auto'>
-            <h2 class='text-center'>Ajouter un article</h2>
+            {% if article is defined %}
+                <h2 class='text-center'>Modifier un article</h2>
+            {% else %}
+                <h2 class='text-center'>Ajouter un article</h2>
+            {% endif %}
         </div>
     </div>
 
     <div class='row'>
        <div class='col-8 mx-auto'>
             {{ form_start(form, {'attr': {novalidate: 'novalidate'}}) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.subtitle) }}
+            {{ form_row(form.content) }}
+            {{ form_row(form.category) }}
+            {{ form_row(form.photo) }}
+                {% if article is not defined %}
+                    <button type="submit" class="d-block col-4 my-3 mx-auto btn btn-success">Créer votre article</button>
+                {% else %}
+                    <button type="submit" class="d-block col-4 my-3 mx-auto btn btn-success">Modifier votre article</button>
+                {% endif %}
             {{ form_end(form) }}
         </div>
     </div>

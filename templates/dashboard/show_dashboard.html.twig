@@ -1,0 +1,114 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+   
+    <h2 class='text-center'>Tableau de bord Administrateur</h2>
+    <div  class="col-sm-12 col-lg-12 col-xl-12 mt-4">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                    {% if label == 'success' %}
+                        <span class="alert-inner--icon"><i class="fe fe-thumbs-up"></i></span>
+                    {% else %}
+                    <span class="alert-inner--icon"><i class="fe fe-thumbs-down"></i></span>
+                    {% endif %}
+                    <span class="alert-inner--text"><strong>{{ label | title }} : </strong> {{ message | raw }}</span>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    <h3 class='text-center'>Tout les articles</h3>
+        <table class='table'>
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Catégorie</th>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Sous-Titre</th>
+                    <th scope="col">Contenu</th>
+                    <th scope="col">Photo</th>
+                    <th scope="col">Créer le</th>
+                    <th scope="col">Modifier le</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for article in articles %}
+                    <tr>
+                        <td>{{ article.id }}</td>
+                        <td>{{ article.category.name }}</td>
+                        <td>{{ article.title | length > 20 ? article.title | slice (0,20) ~ '...' : article.title }}</td>
+                        <td>{{ article.subtitle | length > 20 ? article.subtitle | slice (0,20) ~ '...' : article.subtitle }}</td>
+                        <td>{{ article.content | length > 20 ? article.content | slice (0,20) ~ '...' : article.content }}</td>
+                        <td>{{ article.photo }}</td>
+                        <td>{{ article.createdAt | date( 'd/m/y') }}</td>
+                        <td>{{ article.updatedAt | date('d/m/y') }}</td>
+                        <td>
+                            <a href='{{ path('edit_article', {'id': article.id}) }}' class='btn btn-info'><i class='fa fa-edit'></i></a>
+                            <a href='#' class='btn btn-danger' onClick="return confirm('Voulez vous vraiment supprimer cet article')"><i class='fa fa-trash'></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    <div class='row'>
+       <div class='col-6'>
+            <h3 class='text-center'>Toute les catégories</h3>
+
+            <table class='table mt-5'>
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <td>{{ category.id }}</td>
+                            <td>{{ category.name }}</td>
+                            <td>
+                                <a href='#' class='btn btn-info'><i class='fa fa-edit'></i></a>
+                                <a href='#' class='btn btn-danger' onClick="return confirm('Voulez vous vraiment supprimer cette catégorie')"><i class='fa fa-trash'></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div> 
+
+        <div class='col-6'>
+            <h3 class='text-center'>Tout les utilisateurs</h3>
+
+            <table class='table mt-5'>
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Rôle</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.roles[0] }}</td>
+                            <td>{{ user.lastname }}</td>
+                            <td>{{ user.firstname }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                <a href='#' class='btn btn-info'><i class='fa fa-edit'></i></a>
+                                <a href='#' class='btn btn-danger' onClick="return confirm('Voulez vous vraiment supprimer cette utilisateur')"><i class='fa fa-trash'></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div> 
+    </div>
+
+{% endblock %}

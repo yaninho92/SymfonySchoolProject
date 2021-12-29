@@ -30,13 +30,15 @@
                 Administration
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Dashboard</a></li>
+                <li><a class="dropdown-item" href="{{ path('show_dashboard')}}">Dashboard</a></li>
                 <li><a class="dropdown-item" href="{{ path('create_article')}}">Créer un article</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="#">Something else here</a></li>
               </ul>
             </li>
           {% endif %}
+
+          {{ render('render-categories') }}
           
           {# <li class="nav-item">
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>

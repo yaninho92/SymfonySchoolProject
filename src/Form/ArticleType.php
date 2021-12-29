@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use App\Entity\Category;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -29,21 +31,23 @@ class ArticleType extends AbstractType
                     'placeholder' => 'Contenu de votre article'
                 ]
             ])
+            ->add('category', EntityType::class, [
+                'class' => Category::class, 
+                'choice_label' => 'name',
+                'label' => 'Choissisez la catégories'    
+            ])
             ->add('photo', FileType::class, [
                 'label' => 'Photo',
+                'data_class' => null,
                 'constraints' => [
                     new Image([
                         'mimeTypes' =>['image/jpeg','image/png'],
                         'mimeTypesMessage' => 'Les types de fichiers autorisées sont : .jpeg et .png',
                     ])
-                ]
-
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Créer votre article',
+                ],
                 'attr' => [
-                    'class' => 'd-block col-4 my-3 mx-auto btn btn-success'
-                ] 
+                    'data-default_file' => $options['photo']
+                ]
             ])
         ;
     }
@@ -53,6 +57,7 @@ class ArticleType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Article::class,
             'allow_file_upload' => true,
+            'photo' => null,
         ]);
     }
 }
