@@ -46,4 +46,22 @@ class RegisterController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/admin/supprimer/user/{id}", name="soft_delete_user", methods={"GET"})
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function softDeleteUser(User $user, EntityManagerInterface $entityManager): Response
+    {   
+   
+        $user->setDeletedAt(new DateTime());
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', "L'utilisateur ".$user->getFirstname()." à bien été archivé !!");
+
+        return $this->redirectToRoute('show_dashboard');
+    }
 }

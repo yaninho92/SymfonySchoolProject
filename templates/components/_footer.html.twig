@@ -5,17 +5,7 @@
                 <h5>Actunews</h5>
                 <small class="d-block text-muted">&copy; 2021</small>
             </div>
-            <div class="col-6 col-md">
-                <h5>Catégories</h5>
-                <ul class="list-unstyled">
-                    <li><a href="#" class="text-muted">Politique</a></li>
-                    <li><a href="#" class="text-muted">Economie</a></li>
-                    <li><a href="#" class="text-muted">Social</a></li>
-                    <li><a href="#" class="text-muted">Santé</a></li>
-                    <li><a href="#" class="text-muted">Culture</a></li>
-                    <li><a href="#" class="text-muted">Sports</a></li>
-                </ul>
-            </div>
+            {{ render(controller('App\\Controller\\DefaultController::renderFooterCategories')) }}
             <div class="col-6 col-md">
                 <ul class="list-unstyled">
                     <li><a href="#" class="text-muted">Mentions légales</a></li>

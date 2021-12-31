@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+ <h2 class='text-center'>Mon espace perso</h2>
+    <div  class="col-sm-12 col-lg-12 col-xl-12 mt-4">
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                    {% if label == 'success' %}
+                        <span class="alert-inner--icon"><i class="fe fe-thumbs-up"></i></span>
+                    {% else %}
+                    <span class="alert-inner--icon"><i class="fe fe-thumbs-down"></i></span>
+                    {% endif %}
+                    <span class="alert-inner--text"><strong>{{ label | title }} : </strong> {{ message | raw }}</span>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+        <div class='col-6 mx-auto'>
+            <h3 class='text-center'>Mes infos</h3>
+            <div  class="row">
+        
+                <div class="col-5">
+                  
+                        <a href="{{path('app_forgot_password_request')}}" class="btn btn-info text-center text-white"> Changer mon mot de passe </a>
+                   
+                </div>
+            </div>
+            <table class='table mt-5'>
+                <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                        <tr>
+                            <td>{{ app.user.lastname }}</td>
+                            <td>{{ app.user.firstname }}</td>
+                            <td>{{ app.user.email }}</td>
+                            <td>
+                                <a href='{{ path('edit_user',{'id': app.user.id})}}' class='btn btn-info'><i class='fa fa-edit'></i></a>
+                            </td>
+                        </tr>
+                  
+                </tbody>
+            </table>
+        </div> 
+    </div>
+{% endblock %}

@@ -1,0 +1,10 @@
+<div class="col-6 col-md">
+    <h5>Catégories</h5>
+    <ul class="list-unstyled">
+        {% for category in categories %}
+            <li><a href="{{ path('show_articles_from_category', {'alias': category.alias }) }}" class="text-muted">{{ category.name }}</a></li>
+        {% endfor %}    
+    </ul>     
+</div>
+
+

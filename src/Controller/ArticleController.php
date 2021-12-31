@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Form\ArticleType;
+use App\Entity\Commentary;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class ArticleController extends AbstractController
 {
@@ -19,7 +22,8 @@ class ArticleController extends AbstractController
      * @Route("/admin/creer-un-article", name="create_article", methods={"GET|POST"})
      * @param Request $request
      * @param SluggerInterface $slugger 
-     * @param Response
+     * @param EntityManagerInterface $entityManager
+     * @return Response
      */
     public function createArticle(Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
     {
@@ -77,6 +81,10 @@ class ArticleController extends AbstractController
 
     /**
      * @Route("/admin/editer-un-article_{id}", name="edit_article", methods={"GET|POST"})
+     * @param Request $request
+     * @param SluggerInterface $slugger 
+     * @param EntityManagerInterface $entityManager
+     * @return Response
      */
     public function editArticle(Article $article, Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
     {   
@@ -131,12 +139,55 @@ class ArticleController extends AbstractController
     }
 
     /**
-     * @Route("/voir-un-article_{id}", name="show_article", methods={"GET"})
+     * @Route("/admin/supprimer/article/{id}", name="soft_delete_article", methods={"GET"})
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
      */
-    public function showArticle(Article $article): Response
+    public function softDeleteArticle(Article $article, Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
+    {   
+   
+        $article->setDeletedAt(new DateTime());
+
+        $entityManager->persist($article);
+        $entityManager->flush();
+
+        $this->addFlash('success', "L'article ".$article->getTitle()."à bien été archivé !!");
+
+        return $this->redirectToRoute('show_dashboard');
+    }
+
+    /**
+     * @Route("/voir/{cat_alias}/{art_alias}", name="show_article", methods={"GET"})
+     * @ParamConverter("article", options={"mapping": {"art_alias" : "alias"}})
+     * @param SluggerInterface $slugger 
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function showArticle(Article $article, EntityManagerInterface $entityManager): Response
     {
+        $commentaries = $entityManager->getRepository(Commentary::class)->findBy(['article' => $article->getId()]);
+
         return $this->render('article/show_article.html.twig', [
-            'article' => $article
+            'article' => $article,
+            'commentaries' => $commentaries
+        ]);
+    }
+
+    /**
+     * @Route("voir/categories/{alias}", name="show_articles_from_category", methods={"GET"})
+     * @ParamConverter("article", options={"mapping": {"art_alias" : "alias"}})
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function showArticlesFromCategory(Category $category, EntityManagerInterface $entityManager): Response
+    {
+        $articles = $entityManager->getRepository(Article::class)->findBy(['category' => $category->getId()]);
+
+        return $this->render('article/show_articles_from_category.html.twig', [
+            'articles' => $articles,
+            'category' => $category
         ]);
     }
 

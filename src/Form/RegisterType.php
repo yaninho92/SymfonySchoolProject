@@ -4,17 +4,24 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Validator\Constraints\Length;
 
 class RegisterType extends AbstractType
 {
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;   
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -28,18 +35,22 @@ class RegisterType extends AbstractType
                         'message' => 'Ce champs ne peut être vide, veuillez entrez un email'
                     ]) 
                 ]
-            ])
-            ->add('password', PasswordType::class, [
-                'label' => 'mot de passe',
-                'attr' => [
-                    'placeholder' => 'Entrez un mot de passe'
-                ],
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champs ne peut être vide, veuillez entrez un mot de passe'
-                    ]) 
-                ]
-            ])
+            ]);
+        if (! $this->security->getUser()) {
+            $builder
+                ->add('password', PasswordType::class, [
+                    'label' => 'mot de passe',
+                    'attr' => [
+                        'placeholder' => 'Entrez un mot de passe'
+                    ],
+                    'constraints' => [
+                        new NotBlank([
+                            'message' => 'Ce champs ne peut être vide, veuillez entrez un mot de passe'
+                        ]) 
+                    ]
+                ]);
+        }
+        $builder
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom',
                 'attr' => [

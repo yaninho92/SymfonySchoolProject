@@ -23,9 +23,9 @@ class DashboardController extends AbstractController
      */
     public function showDashboard(EntityManagerInterface $entityManager):Response
     {
-        $articles = $entityManager->getRepository(Article::class)->findAll();
+        $articles = $entityManager->getRepository(Article::class)->findBy(['deletedAt' => null]);
         $categories = $entityManager->getRepository(Category::class)->findAll();
-        $users = $entityManager->getRepository(User::class)->findAll();
+        $users = $entityManager->getRepository(User::class)->findBy(['deletedAt' => null]);
 
 
         return $this->render('dashboard/show_dashboard.html.twig',[
@@ -34,5 +34,24 @@ class DashboardController extends AbstractController
             'users' => $users 
         ]);
     }
+
+    // /**
+    //  * @Route("/poubelle", name="show_trash", methods={"GET"})
+    //  * @param EntityManagerInterface $entityManager
+    //  * @return Response
+    //  */
+    // public function showTrash(EntityManagerInterface $entityManager):Response
+    // {
+    //     $articles = $entityManager->getRepository(Article::class)->findBy(['deletedAt' => !null]);
+    //     $categories = $entityManager->getRepository(Category::class)->findBy(['deletedAt' => !null]);
+    //     $users = $entityManager->getRepository(User::class)->findBy(['deletedAt' => !null]);
+
+
+    //     return $this->render('dashboard/show_dashboard.html.twig',[
+    //         'articles' => $articles,
+    //         'categories' => $categories,
+    //         'users' => $users 
+    //     ]);
+    // }
 
 }
